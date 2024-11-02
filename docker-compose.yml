@@ -32,6 +32,16 @@ services:
     depends_on:
       - db
 
+ # Node.js API Server
+  api:
+    build: .  # Baut das Docker-Image für den Node.js-Service mit dem Dockerfile im aktuellen Verzeichnis
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      - db
+
   
 
 networks:
