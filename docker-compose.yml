@@ -1,37 +1,41 @@
-# docker-compose.yml
 version: '3.8'
 
 services:
-  nginx:
+  # Nginx Webserver
+  webserver:
     image: nginx:latest
     ports:
       - "80:80"
     networks:
-      - webnet
-    depends_on:
-      - db
+      - app-network
 
+  # MySQL-Datenbank
   db:
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: sophie
-      MYSQL_PASSWORD: password
       MYSQL_DATABASE: testdb
+    volumes:
+      - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
-      - webnet
+      - app-network
 
+  # Adminer zur Verwaltung der MySQL-Datenbank
   adminer:
     image: adminer:latest
     ports:
       - "8080:8080"
     networks:
-      - webnet
+      - app-network
     depends_on:
       - db
 
+  
+
 networks:
-  webnet:
-    driver: bridge
+  app-network:
+
+volumes:
+  db_data:
